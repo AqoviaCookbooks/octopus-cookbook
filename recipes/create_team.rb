@@ -66,7 +66,19 @@ powershell_script 'create_octopus_team_if_not_exists' do
 	$teamEnvironments  | %{
 		$environment = Get-OctopusEnvironment -EnvironmentName $_
 		$team.EnvironmentIds.Add($environment.Id)
-	}    
+	}
+
+	$team.MemberUserIds = New-Object Octopus.Client.Model.ReferenceCollection
+
+	# Get Current user's email address
+	$userFqdn = (whoami /fqdn)
+	$adsiUser = [adsi]("LDAP://{0}" -F $userFqdn)
+	$userEmail = $adsiUser.mail[0]
+	# Get OctopusUser by email
+	$users = Get-OctopusUser -Email $userEmail
+	$users | %{
+		$team.MemberUserIds.Add($_.id)
+	}
 
     New-OctopusResource -Resource $team
 	EOH3

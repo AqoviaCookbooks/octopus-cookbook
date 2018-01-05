@@ -1110,3 +1110,47 @@ function Get-OctopusTeam
     }
 }
 
+<#
+.Synopsis
+   Gets octopus user by email
+.DESCRIPTION
+   Gets octopus user by email
+.EXAMPLE
+   Get-OctopusUser -Name "test@dev.com"
+#>
+
+function Get-OctopusUser
+{
+    [CmdletBinding()]
+    [Alias()]
+    Param
+    (
+        # Environment name        
+        [string[]]$Email
+    )
+
+    Begin
+    {
+        $c = New-OctopusConnection
+        $list = @()
+    }
+    Process
+    {
+        if ($Email -eq $null) {
+            $users = $c.repository.Users.FindAll()
+        }
+        else {
+            Write-Verbose "[$($MyInvocation.MyCommand)] Getting user by email: $Email"
+            $users = $c.repository.Users.FindMany({ param($u) $Email.Contains($u.EmailAddress) })
+        }
+
+        $list += $users
+        }
+    End
+    {
+        If($list.count -eq 0) {
+            $list = $null
+        }
+        return $list
+    }
+}
