@@ -29,3 +29,7 @@ else
   default['octopus']['tentacle']['url'] = "https://download.octopusdeploy.com/octopus/Octopus.Tentacle.#{node['octopus']['tentacle']['version']}.msi"
   default['octopus']['tentacle']['checksum'] = '725222257424115455b4b8e38584aa5112e3be93bb30fea9345544e4ab7a2555'
 end
+
+#Team member(s) settings, pass in a list of comma separated emails
+default['octopus']['team']['member_emails'] = nil
+default['octopus']['team']['add_current_user'] = false

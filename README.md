@@ -38,6 +38,13 @@ Attribute                    | Description                                      
 -----------------------------|-------------------------------------------------------------------------------------|---------------------
 thumbprint                   |The octopus server's thumbprint                                                      |`XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`
 
+### Server Attributes
+The following attributes are used to configure team related attributes, accessible via `node['octopus']['team'][attribute]`.
+
+Attribute                    | Description                                                                         			  | Default
+-----------------------------|------------------------------------------------------------------------------------------------|---------------------
+member_emails                |Comma separated emails of Team members                                               			  |nil
+add_current_user             |If member_emails is nil and this is true current user is added to newly created Team on Windows |false
 
 Contributing
 ------------

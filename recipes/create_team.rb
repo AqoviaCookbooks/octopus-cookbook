@@ -46,6 +46,14 @@ powershell_script 'create_octopus_team_if_not_exists' do
 	$can_be_renamed = '#{node['octopus']['team']['can_be_renamed']}'
 	$can_change_roles = '#{node['octopus']['team']['can_change_roles']}'
 	$can_change_members = '#{node['octopus']['team']['can_change_members']}'
+	# Team members - memeber_emails should be comma separated emails
+	$memberEmails = @('#{node['octopus']['team']['member_emails']}') -split ',' | %{$_.Trim()} |?{$_}
+	$addCurrentUser = '#{node['octopus']['team']['add_current_user']}'
+	if (-not($memberEmails) -and $addCurrentUser) {
+		$userFqdn = (whoami /fqdn)
+		$adsiUser = [adsi]("LDAP://{0}" -F $userFqdn) 
+		$memberEmails =  @($adsiUser.mail[0])
+	}
 	
 	Set-OctopusConnectionInfo -URL $octopusURI -APIKey $apikey
 	
@@ -69,15 +77,12 @@ powershell_script 'create_octopus_team_if_not_exists' do
 	}
 
 	$team.MemberUserIds = New-Object Octopus.Client.Model.ReferenceCollection
-
-	# Get Current user's email address
-	$userFqdn = (whoami /fqdn)
-	$adsiUser = [adsi]("LDAP://{0}" -F $userFqdn)
-	$userEmail = $adsiUser.mail[0]
-	# Get OctopusUser by email
-	$users = Get-OctopusUser -Email $userEmail
-	$users | %{
-		$team.MemberUserIds.Add($_.id)
+	# Get Octopus user(s) by email
+	if ($memberEmails) {
+		$memberUsers = Get-OctopusUser -Email $memberEmails
+		$memberUsers | %{
+			$team.MemberUserIds.Add($_.id)
+		}
 	}
 
     New-OctopusResource -Resource $team
