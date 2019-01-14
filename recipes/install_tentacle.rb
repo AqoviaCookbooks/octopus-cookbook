@@ -53,6 +53,7 @@ end
  
  #Unzip downloaded file 
  local_zip_file = win_friendly_path("#{tools['home']}/OctopusTools.4.17.0.zip")
+ 
  windows_zipfile tools['home'] do
   source local_zip_file
   action :unzip
