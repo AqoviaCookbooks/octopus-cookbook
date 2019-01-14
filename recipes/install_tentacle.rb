@@ -33,7 +33,7 @@ end
 octo_exe_path = win_friendly_path("#{tools['home']}/octo.exe")
 
 log 'OctopusTentacleInstall' do
-  message "#tools['home'],  #tools['url'], #tools['checksum']"
+  message "#{tools['home']} #{tools['url']} #{tools['checksum']}"
   level :fatal
 end
 
