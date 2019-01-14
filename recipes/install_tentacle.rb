@@ -38,9 +38,13 @@ log 'OctopusTentacleInstall' do
 end
 
 # download and unzip octopus tools
-windows_zipfile tools['home'] do
+# windows_zipfile tools['home'] do
+  # source tools['url']
+  # checksum tools['checksum']
+  # action :unzip
+  # not_if { ::File.exists?(octo_exe_path) } 
+# end
+
+cookbook_file tools['home'] do
   source tools['url']
-  checksum tools['checksum']
-  action :unzip
-  not_if { ::File.exists?(octo_exe_path) } 
 end
