@@ -45,6 +45,6 @@ end
   # not_if { ::File.exists?(octo_exe_path) } 
 # end
 
-file win_friendly_path("#{tools['home']}/OctopusTools.4.17.0.zip") do
+cookbook_file win_friendly_path("#{tools['home']}/OctopusTools.4.17.0.zip") do
   source tools['url']
 end
