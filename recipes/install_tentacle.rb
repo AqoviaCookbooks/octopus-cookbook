@@ -52,10 +52,10 @@ remote_file win_friendly_path("#{tools['home']}/OctopusTools.4.17.0.zip") do
 end
  
  #Unzip downloaded file 
- local_zip_file = win_friendly_path("#{tools['home']}/OctopusTools.4.17.0.zip")
+ #local_zip_file = win_friendly_path("#{tools['home']}/OctopusTools.4.17.0.zip")
  
- windows_zipfile tools['home'] do
-  source local_zip_file
+windows_zipfile tools['home'] do
+  source  'C:/tools/OctopusTools.4.17.0.zip'
   action :unzip
   not_if { ::File.exists?(octo_exe_path) } 
 end
