@@ -53,8 +53,7 @@ end
  
  #Unzip downloaded file 
  windows_zipfile tools['home'] do
-  #source  'C:\tools\OctopusTools.4.17.0.zip'
-  source  'C:\tools\OctopusTools.4.17.0.zip'
-  action :unzip
-  not_if { ::File.exists?(octo_exe_path) } 
+ source  'C:/tools/OctopusTools.4.17.0.zip'
+ action :unzip
+ not_if { ::File.exists?(octo_exe_path) } 
 end
